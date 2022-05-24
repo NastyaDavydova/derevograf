@@ -51,7 +51,6 @@ public class test extends Application {
             }
         }
         System.out.printf(" Обход дерева от корня и левых потомков к правому потомку и листам: " + t.preOrder());
-//        a = t.preOrder().toArray();
         System.out.printf("\n Обход по значению узла от минимального к максимальному: ");
         t.inOrder();
         System.out.printf("\n Обход по уровням: ");

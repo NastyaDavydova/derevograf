@@ -81,13 +81,13 @@ public class test extends Application {
                 d = d.getParent();
             }
             System.out.println(t.search(s.get(i)));
-            if ((t.getCol(t.search(s.get(i))) == true) && (t.search(s.get(i)).getParent() == null)) {
+            if ((t.search(s.get(i)).col == true) && (t.search(s.get(i)).getParent() == null)) {
                 t.search(s.get(i)).setX(400);
                 t.search(s.get(i)).setY(50);
             }
-            x = 50;
-            if ((t.search(s.get(i)).getParent() != null) && (t.search(s.get(i)).getParent().getParent() == null)) {
-                x = x * (h1 + 1);
+            x = 25;
+            if (t.search(s.get(i)).getParent() != null ) {
+                x = x * (2*h-h1+2);
             }
             if ((t.search(s.get(i)).getParent() != null) && ((t.search(s.get(i)).getParent()).getChilRight() == t.search(s.get(i)))) {
                 t.search(s.get(i)).setX((t.search(s.get(i)).getParent()).getX() + x);
@@ -122,7 +122,7 @@ public class test extends Application {
 
         }
 
-        String customProps = "edge.label = true" + "\n" + "edge.arrow = false";
+        String customProps = "edge.label = false" + "\n" + "edge.arrow = false";
 
         SmartGraphProperties prop = new SmartGraphProperties(customProps);
 
@@ -132,7 +132,7 @@ public class test extends Application {
 
         for (i = 0; i < n; i++) {
             Vertex<Uzel> tg = temp.get(i);
-            if (t.getCol(t.search(s.get(i))) == false) {
+            if (t.search(s.get(i)).col == false) {
                 graphView.getStylableVertex(tg).setStyle(
                         "-fx-stroke-width: 3;\n" + "-fx-stroke: red;\n"
                                 + "-fx-stroke-type: inside;\n" + "-fx-fill: red;");

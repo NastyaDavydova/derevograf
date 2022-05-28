@@ -53,4 +53,7 @@ public class Uzel<T extends Comparable<T>> {
     public Uzel<T> getChilRight() {
         return this.ri;
     }
+    public boolean getCol(Uzel<T> uzel) {
+        return uzel.col;
+    }
 }

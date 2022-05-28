@@ -1,7 +1,8 @@
 package derevo;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
-
+import derevo.Uzel;
+import derevo.Color;
 import java.util.ArrayList;
 
 public class derevo2<T extends Comparable<T>> {
@@ -45,10 +46,6 @@ public class derevo2<T extends Comparable<T>> {
         if (uzel != null) uzel.col = col;
     }
 
-    public boolean getCol(Uzel<T> uzel) {
-        return uzel.col;
-    }
-
     private ArrayList<T> preOrder(Uzel<T> tree) {
         ArrayList<T> s = new ArrayList<>();
         if (tree != null) {
@@ -63,29 +60,32 @@ public class derevo2<T extends Comparable<T>> {
         return preOrder(mR);
     }
 
-    private void inOrder(Uzel<T> tree) {
+    private ArrayList<T> inOrder(Uzel<T> tree) {
+        ArrayList<T> s = new ArrayList<>();
         if (tree != null) {
-            inOrder(tree.lef);
-            System.out.print(tree.key + " ");
-            inOrder(tree.ri);
+            s.addAll(inOrder(tree.lef));
+            s.add(tree.key);
+            s.addAll(inOrder(tree.ri));
         }
+        return s;
     }
 
-    public void inOrder() {
-        inOrder(mR);
+    public ArrayList<T> inOrder() {
+        return inOrder(mR);
     }
 
-    private void postOrder(Uzel<T> tree) {
-
+    private ArrayList<T> postOrder(Uzel<T> tree) {
+        ArrayList<T> s = new ArrayList<>();
         if (tree != null) {
-            postOrder(tree.lef);
-            postOrder(tree.ri);
-            System.out.print(tree.key + " ");
+            s.addAll(postOrder(tree.lef));
+            s.addAll(postOrder(tree.ri));
+            s.add(tree.key);
         }
+        return s;
     }
 
-    public void postOrder() {
-        postOrder(mR);
+    public ArrayList<T> postOrder() {
+       return postOrder(mR);
     }
 
     private Uzel<T> search(Uzel<T> x, T key) {

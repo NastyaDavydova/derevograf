@@ -18,8 +18,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 /**
- *
  * @author brunomnsilva
  */
 public class ExampleMain extends Application {
@@ -28,14 +28,14 @@ public class ExampleMain extends Application {
     public void start(Stage ignored) {
 
         Graph<City, Distance> distances = new GraphEdgeList<>();
-        
+
         Vertex<City> prague = distances.insertVertex(new City("Prague", 0));
         Vertex<City> tokyo = distances.insertVertex(new City("Tokyo", 0));
         Vertex<City> beijing = distances.insertVertex(new City("Beijing", 0));
         Vertex<City> newYork = distances.insertVertex(new City("New York", 0));
         Vertex<City> london = distances.insertVertex(new City("London", 0));
         Vertex<City> helsinky = distances.insertVertex(new City("Helsinky", 0));
-        
+
         distances.insertEdge(tokyo, newYork, new Distance(10838));
         distances.insertEdge(beijing, newYork, new Distance(11550));
         distances.insertEdge(beijing, tokyo, new Distance(1303));
@@ -44,14 +44,15 @@ public class ExampleMain extends Application {
         distances.insertEdge(helsinky, tokyo, new Distance(7815));
         distances.insertEdge(prague, helsinky, new Distance(1845));
         distances.insertEdge(beijing, london, new Distance(8132));
-        
+
         /* Only Java 15 allows for multi-line strings */
         String customProps = "edge.label = true" + "\n" + "edge.arrow = false";
-                
+
         SmartGraphProperties properties = new SmartGraphProperties(customProps);
-        
-        SmartGraphPanel<City, Distance> graphView = new SmartGraphPanel<>(distances, properties, new SmartCircularSortedPlacementStrategy());
-        
+
+        SmartGraphPanel<City, Distance> graphView = new SmartGraphPanel<>(distances,
+                properties, new SmartCircularSortedPlacementStrategy());
+
         Scene scene = new Scene(new SmartGraphDemoContainer(graphView), 1024, 768);
 
         Stage stage = new Stage(StageStyle.DECORATED);
@@ -60,12 +61,12 @@ public class ExampleMain extends Application {
         stage.setMinWidth(800);
         stage.setScene(scene);
         stage.show();
-        
+
         graphView.init();
-        
+
         //graphView.setAutomaticLayout(true);
         
-        /* You can mannualy place vertices at any time. However, these are
+        /* You can manually place vertices at any time. However, these are
         absolute coordinates inside the container panel. */
         graphView.setVertexPosition(beijing, 100, 100);
         graphView.setVertexPosition(helsinky, 924, 100);
@@ -73,11 +74,11 @@ public class ExampleMain extends Application {
         graphView.setVertexPosition(prague, 824, 668);
         graphView.setVertexPosition(tokyo, 512, 300);
         graphView.setVertexPosition(newYork, 512, 400);
-        
+
         graphView.getStylableLabel(tokyo).setStyle("-fx-stroke: red; -fx-fill: red;");
-        
+
     }
-    
+
     public static void main(String[] args) {
         launch(args);
     }

@@ -9,8 +9,5 @@
         <module name="derevograf" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="derevograf" target="15" />
-    </bytecodeTargetLevel>
   </component>
 </project>

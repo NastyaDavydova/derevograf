@@ -3,14 +3,23 @@ package derevo;
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import derevo.Uzel;
 import derevo.Color;
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.ArrayList;
 
 public class derevo2<T extends Comparable<T>> {
 
     private Uzel<T> mR;
 
+    private ArrayList<Uzel<T>> uzels;
+
     public derevo2() {
         mR = null;
+        uzels = new ArrayList<>();
+    }
+
+    public ArrayList<Uzel<T>> getUzels() {
+        return uzels;
     }
 
     private Uzel<T> parOf(Uzel<T> uzel) {
@@ -40,7 +49,6 @@ public class derevo2<T extends Comparable<T>> {
     private void setPar(Uzel<T> uzel, Uzel<T> par) {
         if (uzel != null) uzel.par = par;
     }
-
 
     private void setCol(Uzel<T> uzel, boolean col) {
         if (uzel != null) uzel.col = col;
@@ -85,7 +93,7 @@ public class derevo2<T extends Comparable<T>> {
     }
 
     public ArrayList<T> postOrder() {
-       return postOrder(mR);
+        return postOrder(mR);
     }
 
     private Uzel<T> search(Uzel<T> x, T key) {
@@ -109,7 +117,6 @@ public class derevo2<T extends Comparable<T>> {
             else if (cmp > 0) x = x.ri;
             else return x;
         }
-
         return x;
     }
 
@@ -117,45 +124,47 @@ public class derevo2<T extends Comparable<T>> {
         return iterativeSearch(mR, key);
     }
 
-
     private Uzel<T> max(Uzel<T> tree) {
-        if (tree == null) return null;
-
+        if (tree == null) {
+            return null;
+        }
         while (tree.ri != null) tree = tree.ri;
         return tree;
     }
 
     public T max() {
         Uzel<T> p = max(mR);
-        if (p != null) return p.key;
-
+        if (p != null) {
+            return p.key;
+        }
         return null;
     }
 
     private Uzel<T> min(Uzel<T> tree) {
-        if (tree == null) return null;
-
+        if (tree == null) {
+            return null;
+        }
         while (tree.lef != null) tree = tree.lef;
         return tree;
     }
 
     public T min() {
         Uzel<T> p = min(mR);
-        if (p != null) return p.key;
-
+        if (p != null) {
+            return p.key;
+        }
         return null;
     }
 
-
     public Uzel<T> successor(Uzel<T> x) {
-        if (x.ri != null) return min(x.ri);
-
+        if (x.ri != null) {
+            return min(x.ri);
+        }
         Uzel<T> y = x.par;
         while ((y != null) && (x == y.ri)) {
             x = y;
             y = y.par;
         }
-
         return y;
     }
 
@@ -165,48 +174,42 @@ public class derevo2<T extends Comparable<T>> {
 
     private void riRotate(Uzel<T> y) {
         Uzel<T> x = y.lef;
-
         y.lef = x.ri;
-        if (x.ri != null) x.ri.par = y;
-
+        if (x.ri != null) {
+            x.ri.par = y;
+        }
         x.par = y.par;
-
         if (y.par == null) {
             this.mR = x;
         } else {
             if (y == y.par.ri) y.par.ri = x;
             else y.par.lef = x;
         }
-
         x.ri = y;
         y.par = x;
     }
 
     private void lefRotate(Uzel<T> x) {
         Uzel<T> y = x.ri;
-
         x.ri = y.lef;
-        if (y.lef != null) y.lef.par = x;
-
+        if (y.lef != null) {
+            y.lef.par = x;
+        }
         y.par = x.par;
-
         if (x.par == null) {
             this.mR = y;
         } else {
             if (x.par.lef == x) x.par.lef = y;
             else x.par.ri = y;
         }
-
         y.lef = x;
         x.par = y;
     }
 
     private void insertFixUp(Uzel<T> uzel) {
         Uzel<T> par, gpar;
-
         while (((par = parOf(uzel)) != null) && isR(par)) {
             gpar = parOf(par);
-
             if (par == gpar.lef) {
                 Uzel<T> dada = gpar.ri;
                 if ((dada != null) && isR(dada)) {
@@ -216,7 +219,6 @@ public class derevo2<T extends Comparable<T>> {
                     uzel = gpar;
                     continue;
                 }
-
                 if (par.ri == uzel) {
                     Uzel<T> tmp;
                     lefRotate(par);
@@ -224,7 +226,6 @@ public class derevo2<T extends Comparable<T>> {
                     par = uzel;
                     uzel = tmp;
                 }
-
                 setB(par);
                 setR(gpar);
                 riRotate(gpar);
@@ -237,7 +238,6 @@ public class derevo2<T extends Comparable<T>> {
                     uzel = gpar;
                     continue;
                 }
-
                 if (par.lef == uzel) {
                     Uzel<T> tmp;
                     riRotate(par);
@@ -245,13 +245,11 @@ public class derevo2<T extends Comparable<T>> {
                     par = uzel;
                     uzel = tmp;
                 }
-
                 setB(par);
                 setR(gpar);
                 lefRotate(gpar);
             }
         }
-
         setB(this.mR);
     }
 
@@ -259,14 +257,12 @@ public class derevo2<T extends Comparable<T>> {
         int cmp;
         Uzel<T> y = null;
         Uzel<T> x = this.mR;
-
         while (x != null) {
             y = x;
             cmp = uzel.key.compareTo(x.key);
             if (cmp < 0) x = x.lef;
             else x = x.ri;
         }
-
         uzel.par = y;
         if (y != null) {
             cmp = uzel.key.compareTo(y.key);
@@ -275,23 +271,20 @@ public class derevo2<T extends Comparable<T>> {
         } else {
             this.mR = uzel;
         }
-
         uzel.col = Color.RED.getValue();
-
         insertFixUp(uzel);
     }
 
     public void insert(T key) {
         Uzel<T> uzel = new Uzel<T>(key, Color.BLACK.getValue(), null, null, null);
-
         if (uzel != null) {
             insert(uzel);
+            uzels.add(uzel);
         }
     }
 
     private void removeFixUp(Uzel<T> uzel, Uzel<T> par) {
         Uzel<T> other;
-
         while ((uzel == null || isB(uzel)) && (uzel != this.mR)) {
             if (par.lef == uzel) {
                 other = par.ri;
@@ -301,13 +294,11 @@ public class derevo2<T extends Comparable<T>> {
                     lefRotate(par);
                     other = par.ri;
                 }
-
                 if ((other.lef == null || isB(other.lef)) && (other.ri == null || isB(other.ri))) {
                     setR(other);
                     uzel = par;
                     par = parOf(uzel);
                 } else {
-
                     if (other.ri == null || isB(other.ri)) {
                         setB(other.lef);
                         setR(other);
@@ -322,7 +313,6 @@ public class derevo2<T extends Comparable<T>> {
                     break;
                 }
             } else {
-
                 other = par.lef;
                 if (isR(other)) {
                     setB(other);
@@ -330,21 +320,17 @@ public class derevo2<T extends Comparable<T>> {
                     riRotate(par);
                     other = par.lef;
                 }
-
                 if ((other.lef == null || isB(other.lef)) && (other.ri == null || isB(other.ri))) {
-
                     setR(other);
                     uzel = par;
                     par = parOf(uzel);
                 } else {
-
                     if (other.lef == null || isB(other.lef)) {
                         setB(other.ri);
                         setR(other);
                         lefRotate(other);
                         other = par.lef;
                     }
-
                     setCol(other, colOf(par));
                     setB(par);
                     setB(other.lef);
@@ -354,7 +340,6 @@ public class derevo2<T extends Comparable<T>> {
                 }
             }
         }
-
         if (uzel != null) setB(uzel);
     }
 
@@ -363,76 +348,72 @@ public class derevo2<T extends Comparable<T>> {
         boolean col;
         if ((uzel.lef != null) && (uzel.ri != null)) {
             Uzel<T> per = uzel;
-
             per = per.ri;
             while (per.lef != null) per = per.lef;
-
             if (parOf(uzel) != null) {
                 if (parOf(uzel).lef == uzel) parOf(uzel).lef = per;
                 else parOf(uzel).ri = per;
             } else {
                 this.mR = per;
             }
-
             chil = per.ri;
             par = parOf(per);
             col = colOf(per);
-
             if (par == uzel) {
                 par = per;
             } else {
                 if (chil != null) setPar(chil, par);
                 par.lef = chil;
-
                 per.ri = uzel.ri;
                 setPar(uzel.ri, per);
             }
-
             per.par = uzel.par;
             per.col = uzel.col;
             per.lef = uzel.lef;
             uzel.lef.par = per;
-
             if (col == Color.BLACK.getValue()) removeFixUp(chil, par);
-
             uzel = null;
             return;
         }
-
         if (uzel.lef != null) {
             chil = uzel.lef;
         } else {
             chil = uzel.ri;
         }
-
         par = uzel.par;
         col = uzel.col;
-
-        if (chil != null) chil.par = par;
-
+        if (chil != null) {
+            chil.par = par;
+        }
         if (par != null) {
             if (par.lef == uzel) par.lef = chil;
             else par.ri = chil;
         } else {
             this.mR = chil;
         }
-
-        if (col == Color.BLACK.getValue()) removeFixUp(chil, par);
+        if (col == Color.BLACK.getValue()) {
+            removeFixUp(chil, par);
+        }
         uzel = null;
     }
 
     public void remove(T key) {
         Uzel<T> uzel;
-
-        if ((uzel = search(mR, key)) != null) remove(uzel);
+        if ((uzel = search(mR, key)) != null) {
+            remove(uzel);
+        }
     }
 
     private void destroy(Uzel<T> tree) {
-        if (tree == null) return;
-
-        if (tree.lef != null) destroy(tree.lef);
-        if (tree.ri != null) destroy(tree.ri);
-
+        if (tree == null) {
+            return;
+        }
+        if (tree.lef != null) {
+            destroy(tree.lef);
+        }
+        if (tree.ri != null) {
+            destroy(tree.ri);
+        }
         tree = null;
     }
 
@@ -442,9 +423,7 @@ public class derevo2<T extends Comparable<T>> {
     }
 
     private void print(Uzel<T> tree, T key, int direction) {
-
         if (tree != null) {
-
             if (direction == 0) {
                 System.out.printf("%2d(B) корень\n", tree.key);
                 // t=500;
@@ -458,8 +437,22 @@ public class derevo2<T extends Comparable<T>> {
     }
 
     public void print() {
-        if (mR != null) print(mR, mR.key, 0);
+        if (mR != null) {
+            print(mR, mR.key, 0);
+        }
     }
 
+    public int uzelNumber() {
+        return preOrder().size();
+    }
+
+    public derevo2<T> copy() {
+        derevo2<T> res = new derevo2<>();
+        ArrayList<Uzel<T>> d = this.uzels;
+        for (Uzel<T> u : d) {
+            res.insert(u.key);
+        }
+        return res;
+    }
 }
 

@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Company extends Application {
+public class VisualFinal extends Application {
     private static final boolean mIns = false;
     private static final boolean mDel = true;
 
@@ -173,9 +173,9 @@ public class Company extends Application {
 
     private void initializeUI(Stage primaryStage) {
         sortFilterBox.getItems().addAll(
-                "inOrder",
-                "preOrder",
-                "postOrder"
+                "Инфиксный",
+                "Префиксный",
+                "Постфиксный"
         );
 
         root.getChildren().add(strings);
@@ -207,7 +207,7 @@ public class Company extends Application {
 
 
         sorts.setSpacing(10);
-        sorts.getChildren().add(new Text("Вид сортировки"));
+        sorts.getChildren().add(new Text("Вид обхода дерева"));
         sorts.getChildren().add(sortFilterBox);
         sorts.getChildren().add(sort);
 

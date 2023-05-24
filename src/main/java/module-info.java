@@ -12,11 +12,6 @@ module com.example.derevograf {
     requires java.desktop;
     requires JavaFXSmartGraph;
 
-    opens com.example.derevograf to javafx.fxml;
-    exports com.example.derevograf;
-    exports example;
-    opens example to javafx.graphics;
-
     exports derevo;
     opens derevo to test;
 

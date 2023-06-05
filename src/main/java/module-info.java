@@ -13,6 +13,8 @@ module com.example.derevograf {
     requires JavaFXSmartGraph;
 
     exports derevo;
-    opens derevo to test;
+
+    opens derevo;
+//    opens Derevo to test;
 
 }

@@ -42,7 +42,7 @@ public class VisualFinal extends Application {
     final private int WIDTH = 1024;
     final private int HEIGHT = 768;
 
-    derevo2<Integer> tree = new derevo2<Integer>();
+    Derevo<Integer> tree = new Derevo<Integer>();
     public ArrayList<Integer> preOrder = tree.preOrder();
 
     Graph<Uzel, Integer> graph = new GraphEdgeList<>();
@@ -61,6 +61,8 @@ public class VisualFinal extends Application {
 
     int currentVersion = 0;
     SmartGraphProperties prop;
+
+    ArrayList<Derevo> trees = new ArrayList<>();
 
     //Назначение координат вершинам
     private void assignCoordsDerevo() {
@@ -218,6 +220,21 @@ public class VisualFinal extends Application {
         graphView.init();
     }
 
+    private void deleteIrrelevantNexts() {
+        while (trees.size() > currentVersion + 1) {
+            System.out.println(trees.size() > currentVersion + 1);
+            trees.remove(trees.size() - 1);
+        }
+    }
+
+    private void redraw() {
+        graficder.getChildren().clear();
+        prepareGraph();
+        //Инициализация пользовательского интерфейса
+        setCoordsGV();
+        graficder.getChildren().add(graphView);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         for (int i = 0; i < initialValues.length; i++) {
@@ -229,7 +246,6 @@ public class VisualFinal extends Application {
                 System.out.print("\n");
             }
         }
-        ArrayList<derevo2> trees = new ArrayList<>();
         trees.add(tree.copy());
         graph = new GraphEdgeList<>();
         String gvProps = "edge.label = false" + "\n" + "edge.arrow = false";
@@ -244,25 +260,18 @@ public class VisualFinal extends Application {
             public void handle(ActionEvent e) {
                 System.out.println("\n\n\n");
                 if (tree.search(Integer.valueOf(uzelInput.getText())) == null) {
-                    while (trees.size() > currentVersion + 1) {
-                        System.out.println(trees.size() > currentVersion + 1);
-                        trees.remove(trees.size() - 1);
-                    }
+                    deleteIrrelevantNexts();
                     tree.insert(Integer.valueOf(uzelInput.getText()));
 
-                    derevo2 tr = tree.copy();
+                    Derevo tr = tree.copy();
                     trees.add(tr);
                     currentVersion = trees.size() - 1;
                     System.out.println("trees: " + trees);
-                    for (derevo2 t : trees) {
+                    for (Derevo t : trees) {
                         System.out.println();
                         t.print();
                     }
-                    graficder.getChildren().clear();
-                    prepareGraph();
-                    //Инициализация пользовательского интерфейса
-                    setCoordsGV();
-                    graficder.getChildren().add(graphView);
+                    redraw();
                 }
                 uzelInput.clear();
             }
@@ -273,24 +282,19 @@ public class VisualFinal extends Application {
             public void handle(ActionEvent e) {
                 System.out.println("\n\n\n");
                 if (tree.search(Integer.valueOf(uzelInput.getText())) != null) {
-                    while (trees.size() > currentVersion + 1) {
-                        trees.remove(trees.size() - 1);
-                        System.out.println(trees.size() > currentVersion + 1);
-                        trees.remove(trees.size() - 1);
-                    }
+                    deleteIrrelevantNexts();
                     tree.remove(Integer.valueOf(uzelInput.getText()));
-                    trees.add(tree.copy());
+
+                    Derevo tr = tree.copy();
+                    trees.add(tr);
+
                     currentVersion = trees.size() - 1;
                     System.out.println("trees " + trees);
-                    for (derevo2 tree1 : trees) {
+                    for (Derevo tree1 : trees) {
                         System.out.println();
                         tree1.print();
                     }
-                    graficder.getChildren().clear();
-                    prepareGraph();
-                    //Инициализация пользовательского интерфейса
-                    setCoordsGV();
-                    graficder.getChildren().add(graphView);
+                    redraw();
                 }
                 uzelInput.clear();
             }
@@ -301,17 +305,13 @@ public class VisualFinal extends Application {
             public void handle(ActionEvent e) {
                 if (currentVersion < trees.size() - 1) {
                     currentVersion++;
-                    System.out.println("next " +currentVersion);
-                    for (derevo2 tree1 : trees) {
+                    System.out.println("next " + currentVersion);
+                    for (Derevo tree1 : trees) {
                         System.out.println();
                         tree1.print();
                     }
                     tree = trees.get(currentVersion).copy();
-                    graficder.getChildren().clear();
-                    prepareGraph();
-                    //Инициализация пользовательского интерфейса
-                    setCoordsGV();
-                    graficder.getChildren().add(graphView);
+                    redraw();
                 }
             }
         });
@@ -320,17 +320,12 @@ public class VisualFinal extends Application {
             public void handle(ActionEvent e) {
                 if (currentVersion > 0) {
                     currentVersion--;
-                    System.out.println("last " +currentVersion);
-                    for (derevo2 tree1 : trees) {
-                        System.out.println();
+                    System.out.println("last " + currentVersion);
+                    for (Derevo tree1 : trees) {
                         tree1.print();
                     }
                     tree = trees.get(currentVersion).copy();
-                    graficder.getChildren().clear();
-                    prepareGraph();
-                    //Инициализация пользовательского интерфейса
-                    setCoordsGV();
-                    graficder.getChildren().add(graphView);
+                    redraw();
                 }
 
             }

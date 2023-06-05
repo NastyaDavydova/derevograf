@@ -90,6 +90,19 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+
+
+        <!---->
+
+        <dependency>
+            <groupId>com.javaFXSmartGraph</groupId>
+            <artifactId>javaFXSmartGraph</artifactId>
+            <version>0.9.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/JavaFXSmartGraph-0.9.4.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -122,6 +135,22 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>src/main/java/</classpathPrefix>
+                            <mainClass>derevo.VisualFinal</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

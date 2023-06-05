@@ -1,19 +1,14 @@
 package derevo;
 
-import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
-import derevo.Uzel;
-import derevo.Color;
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.ArrayList;
 
-public class derevo2<T extends Comparable<T>> {
+public class Derevo<T extends Comparable<T>> {
 
     private Uzel<T> mR;
 
     private ArrayList<Uzel<T>> uzels;
 
-    public derevo2() {
+    public Derevo() {
         mR = null;
         uzels = new ArrayList<>();
     }
@@ -340,7 +335,9 @@ public class derevo2<T extends Comparable<T>> {
                 }
             }
         }
-        if (uzel != null) setB(uzel);
+        if (uzel != null) {
+            setB(uzel);
+        }
     }
 
     private void remove(Uzel<T> uzel) {
@@ -351,8 +348,11 @@ public class derevo2<T extends Comparable<T>> {
             per = per.ri;
             while (per.lef != null) per = per.lef;
             if (parOf(uzel) != null) {
-                if (parOf(uzel).lef == uzel) parOf(uzel).lef = per;
-                else parOf(uzel).ri = per;
+                if (parOf(uzel).lef == uzel) {
+                    parOf(uzel).lef = per;
+                } else {
+                    parOf(uzel).ri = per;
+                }
             } else {
                 this.mR = per;
             }
@@ -371,7 +371,9 @@ public class derevo2<T extends Comparable<T>> {
             per.col = uzel.col;
             per.lef = uzel.lef;
             uzel.lef.par = per;
-            if (col == Color.BLACK.getValue()) removeFixUp(chil, par);
+            if (col == Color.BLACK.getValue()) {
+                removeFixUp(chil, par);
+            }
             uzel = null;
             return;
         }
@@ -401,6 +403,7 @@ public class derevo2<T extends Comparable<T>> {
         Uzel<T> uzel;
         if ((uzel = search(mR, key)) != null) {
             remove(uzel);
+            uzels.remove(uzel);
         }
     }
 
@@ -426,8 +429,6 @@ public class derevo2<T extends Comparable<T>> {
         if (tree != null) {
             if (direction == 0) {
                 System.out.printf("%2d(B) корень\n", tree.key);
-                // t=500;
-                //s=500;}
             } else {
                 System.out.printf("%2d  %6s потомок %2d(%s)\n", tree.key, isR(tree) ? "R" : "B", key, direction == 1 ? "правый" : "левый");
             }
@@ -446,8 +447,8 @@ public class derevo2<T extends Comparable<T>> {
         return preOrder().size();
     }
 
-    public derevo2<T> copy() {
-        derevo2<T> res = new derevo2<>();
+    public Derevo<T> copy() {
+        Derevo<T> res = new Derevo<>();
         ArrayList<Uzel<T>> d = this.uzels;
         for (Uzel<T> u : d) {
             res.insert(u.key);
